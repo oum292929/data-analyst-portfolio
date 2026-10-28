@@ -1,38 +1,40 @@
-# สวัสดีครับ/ค่ะ, ผมชื่อ [ชื่อ-นามสกุล] 👋
+# [Your Full Name]
 
-**Data Analyst (Marketing & Finance)** | [จังหวัด/ประเทศ] | เปิดรับโอกาสงานสาย Data Analyst
+**Data Analyst | Marketing & Finance Analytics**
+[City, Country] | Open to Data Analyst opportunities
 
-ผมสนใจการใช้ข้อมูลช่วยตัดสินใจด้านการตลาดและการเงิน
-โปรเจคด้านล่างแสดงทักษะ SQL, Python, การวิเคราะห์เชิงสถิติ และการสื่อสารผลลัพธ์เชิงธุรกิจ
+I apply data analysis to support decision-making in marketing and finance. The projects below demonstrate my skills in SQL, Python, statistical analysis, and the communication of findings to business stakeholders.
 
-📧 [อีเมล] · 💼 [LinkedIn URL]
+**Contact:** [Email] | [LinkedIn URL]
 
 ---
 
-## 🛠 Skills
+## Technical Skills
 
-| ด้าน | เครื่องมือ |
+| Area | Tools |
 |---|---|
-| Query & Database | SQL (SQLite / PostgreSQL / MySQL) |
-| Analysis | Python (pandas, numpy, matplotlib, seaborn), Excel |
+| Querying and Databases | SQL (SQLite, PostgreSQL, MySQL) |
+| Analysis | Python (pandas, NumPy, matplotlib, seaborn), Excel |
 | Visualization | [Power BI / Tableau / Looker Studio] |
-| Others | Git/GitHub, Jupyter Notebook |
+| Other | Git and GitHub, Jupyter Notebook |
 
 ---
 
-## 📁 Projects
+## Projects
 
-### 1. [Customer Segmentation with RFM (Marketing)](./01-marketing-rfm-segmentation)
-แบ่งกลุ่มลูกค้าตามความสดใหม่ ความถี่ และมูลค่าการซื้อ เพื่อเสนอกลุ่มเป้าหมายสำหรับแคมเปญการตลาด
-**Tools:** SQL, Python (pandas) · **Key insight:** [ใส่ผลลัพธ์เด่น 1 บรรทัด]
+### 1. [Customer Segmentation Using RFM Analysis (Marketing)](./01-marketing-rfm-segmentation)
+Segments customers by recency, frequency, and monetary value to identify target groups for marketing campaigns.
+**Tools:** SQL, Python (pandas)
+**Key finding:** [One-line summary of the main result]
 
-### 2. [Stock Risk & Return Analysis (Finance)](./02-finance-stock-risk-return)
-วิเคราะห์ผลตอบแทน ความผันผวน Sharpe Ratio, Max Drawdown และความสัมพันธ์ของหุ้นหลายตัว เพื่อประกอบการจัดพอร์ตลงทุน
-**Tools:** Python (pandas, yfinance, matplotlib) · **Key insight:** [ใส่ผลลัพธ์เด่น 1 บรรทัด]
+### 2. [Stock Risk and Return Analysis (Finance)](./02-finance-stock-risk-return)
+Evaluates the returns, volatility, Sharpe ratio, maximum drawdown, and correlations of multiple stocks to inform portfolio allocation.
+**Tools:** Python (pandas, yfinance, matplotlib)
+**Key finding:** [One-line summary of the main result]
 
 ---
 
-## 📂 Repository Structure
+## Repository Structure
 
 ```
 .
