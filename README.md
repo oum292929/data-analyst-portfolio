@@ -1,11 +1,11 @@
-# [Your Full Name]
+#  Napassorn Nillawan
 
 **Data Analyst | Marketing & Finance Analytics**
 [City, Country] | Open to Data Analyst opportunities
 
 I apply data analysis to support decision-making in marketing and finance. The projects below demonstrate my skills in SQL, Python, statistical analysis, and the communication of findings to business stakeholders.
 
-**Contact:** [Email] | [LinkedIn URL]
+**Contact:** napassorn.nnil@gmail.com
 
 ---
 
