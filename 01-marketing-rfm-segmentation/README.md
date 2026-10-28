@@ -1,50 +1,88 @@
-# 🛍 Customer Segmentation with RFM Analysis
+# Customer Segmentation Using RFM Analysis
 
-> แบ่งกลุ่มลูกค้าด้วย RFM (Recency, Frequency, Monetary) เพื่อให้ทีมการตลาดรู้ว่าควรทำแคมเปญแบบไหนกับลูกค้ากลุ่มไหน
+> Segments customers by Recency, Frequency, and Monetary value so that marketing teams can match each campaign to the right customer group.
 
 ## 1. Business Problem
-[อธิบาย 2-3 ประโยค เช่น: ร้านค้าออนไลน์มีลูกค้าจำนวนมากแต่ส่งโปรโมชันเหมือนกันทุกคน ต้องการรู้ว่าใครคือลูกค้าที่ควรรักษาไว้ และใครกำลังจะหายไป]
 
-**คำถามที่ต้องการตอบ**
-1. ลูกค้ากลุ่มไหนสร้างรายได้สูงสุด?
-2. ลูกค้ากลุ่มไหนเสี่ยงหายไปและควรทำ win-back campaign?
-3. ควรแบ่งงบการตลาดให้แต่ละกลุ่มอย่างไร?
+An online retailer serving customers across the United States wants to make its marketing spend more efficient. Sending the same promotion to every customer overspends on those who would buy anyway and under-invests in valuable customers who are becoming inactive. This project uses order history to identify which customers to retain, which to re-engage, and which to deprioritize.
+
+**Questions addressed**
+1. Which customer segments generate the most revenue?
+2. Which segments are at risk of churning and warrant a win-back campaign?
+3. How should marketing effort be prioritized across segments?
 
 ## 2. Dataset
-- **แหล่งที่มา:** [Online Retail (UCI / Kaggle)] · [ใส่ลิงก์ที่ดาวน์โหลดจริง]
-- **คอลัมน์ที่ใช้:** InvoiceNo, InvoiceDate, Quantity, UnitPrice, CustomerID
-- **ขนาด/ช่วงเวลา:** [จำนวนแถว] แถว · [ช่วงเวลา]
 
-> วางไฟล์ข้อมูลไว้ที่ `data/online_retail.csv` (ถ้าไฟล์ใหญ่ ไม่ต้องอัปโหลดขึ้น GitHub ให้ใส่ลิงก์ดาวน์โหลดไว้ที่นี่แทน)
+- **Source:** [E-Commerce U.S. Dataset (2019~2025, 1 Million rows)](https://www.kaggle.com/datasets/limjeongeun/synthetic-u-s-e-commerce-dataset-1m-orders) on Kaggle
+- **Nature of data:** Synthetic. The records are artificially generated, so the findings illustrate the analytical method and do not describe real customer behavior.
+- **Size:** Approximately 1 million order records
+- **Period:** 2019 to 2025
+- **License:** [Confirm on the Kaggle dataset page]
+- **Fields used:** customer identifier, order identifier, order date, and order amount (or quantity and price). The script matches common column names automatically.
+
+The raw file is not included in this repository. To reproduce the analysis, download the dataset from the link above, save it as `data/orders.csv`, and run the script.
 
 ## 3. Tools
-`SQL` · `Python (pandas, matplotlib)`
 
-## 4. Method
-1. **Data Cleaning** – ตัดแถวที่ไม่มี CustomerID, ตัดรายการคืนสินค้า (Quantity ≤ 0), สร้างคอลัมน์ยอดขาย
-2. **คำนวณ RFM** – Recency (วันนับจากซื้อล่าสุด), Frequency (จำนวนใบสั่งซื้อ), Monetary (ยอดซื้อรวม)
-3. **ให้คะแนน 1-5** ด้วย quintile แล้วจัดกลุ่ม เช่น Champions, Loyal, At Risk, Lost
-4. **สรุปแต่ละกลุ่ม** และเสนอแนวทางแคมเปญ
+`SQL` · `Python (pandas, NumPy, matplotlib)`
 
-โค้ด: [`src/rfm_analysis.py`](./src/rfm_analysis.py) · SQL: [`sql/rfm_analysis.sql`](./sql/rfm_analysis.sql)
+## 4. Data Cleaning
 
-## 5. Key Findings
-| กลุ่มลูกค้า | จำนวน | สัดส่วนรายได้ | ข้อเสนอแนะ |
+Before computing RFM metrics, the data was checked and cleaned in the steps below. The script records row counts after each step in [`images/cleaning_log.csv`](./images/cleaning_log.csv) so the process is transparent and reproducible.
+
+| Step | Check | Action | Rows affected |
 |---|---|---|---|
-| Champions | [ ] | [ ]% | [เช่น ให้สิทธิพิเศษ/early access] |
-| At Risk | [ ] | [ ]% | [เช่น ส่งคูปองดึงกลับ] |
-| Lost | [ ] | [ ]% | [เช่น ลดงบหรือส่งแบบประหยัดต้นทุน] |
+| 1 | Initial load | Load the raw file and inspect structure and column types | [ ] rows loaded |
+| 2 | Missing values | Count nulls in key fields; remove rows with no customer, order, or date, since they cannot be attributed to a customer | [ ] removed |
+| 3 | Duplicates | Remove exact duplicate rows | [ ] removed |
+| 4 | Data types | Convert the order date to a date type and amounts to numeric; drop values that cannot be parsed | [ ] removed |
+| 5 | Invalid values | Exclude rows with non-positive quantity, price, or amount (returns and data errors) | [ ] removed |
+| 6 | Outliers | Flag order values above Q3 + 1.5 × IQR; flagged rows are reviewed and kept in the data | [ ] flagged |
+| 7 | Consistency | Confirm the date range and check that the amount matches quantity × price where all three exist | [ ] inconsistencies |
+| 8 | Final dataset | Create the sales column and pass the cleaned data to the RFM step | [ ] rows retained |
 
-![segment chart](./images/rfm_segments.png)
+**Notes**
+- Because the dataset is synthetic, some checks may find no issues. Each check is still reported, since documenting that the data was verified is part of a sound analysis.
+- Cleaning logic is in [`src/rfm_analysis.py`](./src/rfm_analysis.py), function `clean()`. The same logic is applied in the first step of the SQL query.
 
-## 6. Business Recommendations
-- [ข้อเสนอแนะ 1 พร้อมเหตุผลจากข้อมูล]
-- [ข้อเสนอแนะ 2]
+## 5. Methodology
 
-## 7. How to Run
+1. **RFM calculation:** For each customer, compute Recency (days from the last purchase to a snapshot date set one day after the most recent order), Frequency (number of distinct orders), and Monetary value (total spend).
+2. **Scoring:** Assign each metric a score from 1 to 5 using quintiles, then map score combinations to segments (Champions, Loyal, New / Promising, At Risk, Need Attention, Lost).
+3. **Segment profiling:** Summarize customer count, average recency and frequency, and revenue contribution for each segment, then propose a campaign approach.
+
+**Code:** [`src/rfm_analysis.py`](./src/rfm_analysis.py) · **SQL equivalent:** [`sql/rfm_analysis.sql`](./sql/rfm_analysis.sql)
+
+## 6. Key Findings
+
+Figures below are produced by running `src/rfm_analysis.py` (see `images/segment_summary.csv`).
+
+| Segment | Customers | Share of revenue | Recommended action |
+|---|---|---|---|
+| Champions | [ ] | [ ]% | Reward loyalty with early access to new products and exclusive offers |
+| At Risk | [ ] | [ ]% | Send time-limited win-back offers to recover previously valuable customers |
+| Lost | [ ] | [ ]% | Limit spend; use low-cost channels such as periodic email |
+
+![Revenue share by segment](./images/rfm_segments.png)
+
+## 7. Business Recommendations
+
+- **Protect high-value customers first.** Prioritize retention spend on Champions and Loyal customers, since losing them has the largest revenue impact.
+- **Target At Risk customers with win-back offers.** These customers purchased frequently in the past but have gone quiet, making them the most promising group for reactivation.
+- **Reduce spend on Lost customers.** Use low-cost channels rather than paid campaigns, as the expected return is lowest.
+- **Nurture New / Promising customers.** Encourage a second purchase early, while repeat behavior is still forming.
+
+## 8. Limitations
+
+- The data is synthetic, so segment sizes and revenue shares reflect how the data was generated rather than real customer behavior. The value of this project lies in the method, which can be applied unchanged to real transaction data.
+- RFM describes past behavior only and does not predict future purchases.
+- Segment thresholds (quintile cut-offs) are a modeling choice and may be tuned for a specific business.
+
+## 9. How to Run
+
 ```bash
 git clone https://github.com/oum292929/data-analyst-portfolio.git
 cd data-analyst-portfolio/01-marketing-rfm-segmentation
 pip install -r requirements.txt
-python src/rfm_analysis.py data/online_retail.csv
+python src/rfm_analysis.py data/orders.csv
 ```
